@@ -1,7 +1,13 @@
-# Awesome Project Build with TypeORM
+## Descrição
 
-Steps to run this project:
+Este é um sistema simples para se fazer login utilizando seu email e senha.
 
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+
+### Tecnologias Utilizadas
+
+- typescript
+
+
+### Contribuições
+
+Sinta-se à vontade para contribuir com melhorias ou sugestões para o sistema!
