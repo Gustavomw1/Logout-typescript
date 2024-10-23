@@ -63,32 +63,23 @@ function verifyJWT(req: Request, res: Response) {
 userRouter.post("/login", async (req: Request, res: Response) => {
   const { email, senha } = req.body;
 
-  if (!email || !senha) {
-    return res.status(400).json({ erro: "Email e senha são obrigatórios" });
+  try {
+    const result = db.query("SELECT * FROM usuarios WHERE email = $1", [email]);
+    res.status(401).json({ erro: "erro ao buscar usuario" });
+  } catch {
+    res.status(201).json({ mensagem: "ok" });
   }
+});
+
+//Deletar usuario
+userRouter.delete("/profile/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
 
   try {
-    const result = await db.query("SELECT * FROM usuarios WHERE email = $1", [
-      email,
-    ]);
-
-    if (!result || !result.rows || result.rows.length === 0) {
-      return res.status(404).json({ erro: "Usuário não encontrado" });
-    }
-
-    const usuario = result.rows[0];
-    const match = await bcrypt.compare(senha, usuario.senha);
-
-    if (!match) {
-      return res.status(401).json({ erro: "Senha incorreta" });
-    }
-
-    const token = jwt.sign({ userId: usuario.id }, SECRET, { expiresIn: "5m" });
-    return res
-      .status(200)
-      .json({ auth: true, token, mensagem: "Login bem-sucedido" });
-  } catch (error) {
-    return res.status(500).json({ erro: "Erro ao buscar usuário" });
+    const result = await db.query("DELETE FROM usuarios WHERE id = $1", [id]);
+    res.status(200).json({ mensagem: "Usuairo deletado com sucesso" });
+  } catch {
+    res.status(401).json({ erro: "erro ao deletar usuario" });
   }
 });
 
