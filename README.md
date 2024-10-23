@@ -6,6 +6,9 @@ Este é um sistema simples para se fazer login utilizando seu email e senha.
 ### Tecnologias Utilizadas
 
 - typescript
+- postgres
+- jwt
+- typeorm
 
 
 ### Contribuições
