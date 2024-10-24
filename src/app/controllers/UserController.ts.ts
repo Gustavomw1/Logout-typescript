@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 const SECRET = "tools";
 
 const db = AppDataSource;
-
 const userRouter = Router();
 
 //Ver usuarios
@@ -64,10 +63,12 @@ userRouter.post("/login", async (req: Request, res: Response) => {
   const { email, senha } = req.body;
 
   try {
-    const result = db.query("SELECT * FROM usuarios WHERE email = $1", [email]);
-    res.status(401).json({ erro: "erro ao buscar usuario" });
+    const result = await db.query("SELECT FROM usuarios WHERE email = $1", [
+      email,
+    ]);
+    res.status(200).json({ erro: "Usuario encontrado" });
   } catch {
-    res.status(201).json({ mensagem: "ok" });
+    res.status(401).json({ mensagem: "usuario nao encontrado" });
   }
 });
 
@@ -79,7 +80,7 @@ userRouter.delete("/profile/:id", async (req: Request, res: Response) => {
     const result = await db.query("DELETE FROM usuarios WHERE id = $1", [id]);
     res.status(200).json({ mensagem: "Usuairo deletado com sucesso" });
   } catch {
-    res.status(401).json({ erro: "erro ao deletar usuario" });
+    res.status(401).json({ erro: "Erro ao deletar usuario" });
   }
 });
 
